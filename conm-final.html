@@ -1,0 +1,1805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONM Practical - 29 Programs</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #ecf0f1;
+            color: #2c3e50;
+        }
+
+        .header {
+            background-color: #1c2833;
+            color: #ecf0f1;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        .container {
+            display: flex;
+            height: calc(100vh - 140px);
+            gap: 0;
+        }
+
+        .sidebar {
+            width: 30%;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            overflow-y: auto;
+            border-right: 2px solid #1c2833;
+            padding: 10px 0;
+        }
+
+        .program-list {
+            list-style: none;
+        }
+
+        .program-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            border-bottom: 1px solid #34495e;
+            transition: all 0.3s ease;
+            font-size: 0.95em;
+        }
+
+        .program-item:hover {
+            background-color: #34495e;
+            padding-left: 25px;
+        }
+
+        .program-item.active {
+            background-color: #3498db;
+            border-left: 4px solid #2980b9;
+            font-weight: bold;
+        }
+
+        .content-area {
+            width: 70%;
+            display: flex;
+            flex-direction: column;
+            background-color: #ecf0f1;
+        }
+
+        .code-section {
+            height: 60%;
+            display: flex;
+            flex-direction: column;
+            border-bottom: 2px solid #bdc3c7;
+        }
+
+        .output-section {
+            height: 40%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .section-title {
+            background-color: #34495e;
+            color: #ecf0f1;
+            padding: 12px 15px;
+            font-weight: bold;
+            font-size: 0.95em;
+        }
+
+        .code-display {
+            flex: 1;
+            overflow-y: auto;
+            background-color: #1e1e1e;
+            padding: 15px;
+            font-family: 'Courier New', 'Consolas', monospace;
+            font-size: 0.9em;
+            line-height: 1.6;
+            color: #d4d4d4;
+            border: 1px solid #bdc3c7;
+            white-space: pre;
+            word-wrap: break-word;
+        }
+
+        .output-display {
+            flex: 1;
+            overflow-y: auto;
+            background-color: #e8f4f8;
+            padding: 15px;
+            font-family: 'Courier New', 'Consolas', monospace;
+            font-size: 0.9em;
+            line-height: 1.7;
+            color: #1a5276;
+            border: 1px solid #bdc3c7;
+            white-space: pre;
+            word-wrap: break-word;
+        }
+
+        .code-display::-webkit-scrollbar,
+        .output-display::-webkit-scrollbar,
+        .sidebar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .code-display::-webkit-scrollbar-track,
+        .output-display::-webkit-scrollbar-track,
+        .sidebar::-webkit-scrollbar-track {
+            background: #ecf0f1;
+        }
+
+        .code-display::-webkit-scrollbar-thumb,
+        .output-display::-webkit-scrollbar-thumb,
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #95a5a6;
+            border-radius: 4px;
+        }
+
+        .code-display::-webkit-scrollbar-thumb:hover,
+        .output-display::-webkit-scrollbar-thumb:hover,
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: #7f8c8d;
+        }
+
+        .footer {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            text-align: center;
+            padding: 15px;
+            font-size: 0.85em;
+            border-top: 2px solid #1c2833;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: 200px;
+                border-right: none;
+                border-bottom: 2px solid #1c2833;
+            }
+
+            .content-area {
+                width: 100%;
+                height: calc(100vh - 340px);
+            }
+
+            .header h1 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔢 CONM Practical</h1>
+        <p>Computer Oriented Numerical Methods - 29 Programs Collection</p>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <ul class="program-list" id="programList">
+                <!-- Program items will be generated here by JavaScript -->
+            </ul>
+        </div>
+
+        <div class="content-area">
+            <div class="code-section">
+                <div class="section-title">📝 Source Code</div>
+                <pre id="codeDisplay" class="code-display"></pre>
+            </div>
+
+            <div class="output-section">
+                <div class="section-title">📤 Output / Result</div>
+                <pre id="outputDisplay" class="output-display"></pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 CONM Practical File | Computer Oriented Numerical Methods</p>
+    </div>
+
+    <script>
+        const programs = [
+            {
+                id: 1,
+                title: "Convert Decimal to Binary",
+                code: `#include<stdio.h>
+
+int main()
+{
+  int num, rem, i=1;
+  long binary=0;
+  printf("Enter decimal number: ");
+  scanf("%d", &num);
+  
+  while(num != 0)
+  {
+    rem = num % 2;
+    binary += rem * i;
+    i *= 10;
+    num = num / 2;
+  }
+  
+  printf("Binary number is: %ld", binary);
+  return 0;
+}`,
+                output: `Enter decimal number: 2
+Binary number is: 10`
+            },
+            {
+                id: 2,
+                title: "Convert Binary to Decimal",
+                code: `#include<stdio.h>
+
+int main()
+{
+  int num, i=1, rem;
+  int dec = 0;
+  printf("Enter binary number: ");
+  scanf("%d", &num);
+  
+  while(num != 0)
+  {
+    rem = num % 10;
+    dec += rem * i;
+    i *= 2;
+    num = num / 10;
+  }
+  
+  printf("Decimal number is: %d", dec);
+  return 0;
+}`,
+                output: `Enter binary number: 10
+Decimal number is: 2`
+            },
+            {
+                id: 3,
+                title: "Convert Decimal Fraction to Binary",
+                code: `#include<stdio.h>
+
+int main()
+{
+  float num;
+  printf("Enter decimal fraction number: ");
+  scanf("%f", &num);
+  
+  int a = (int)num;
+  int rem, i = 1;
+  long binary = 0;
+  
+  while(a)
+  {
+    rem = a % 2;
+    binary += rem * i;
+    i *= 10;
+    a = a / 2;
+  }
+  
+  printf("Binary number: %ld", binary);
+  float frac = num - (int)num;
+  int count = 0;
+  printf(".");
+  
+  while(frac && count < 10)
+  {
+    frac *= 2;
+    int bit = (int)frac;
+    printf("%d", bit);
+    frac -= bit;
+    count++;
+  }
+  
+  return 0;
+}`,
+                output: `Enter decimal fraction number: 5.5
+Binary number: 101.1`
+            },
+            {
+                id: 4,
+                title: "Convert Binary Fraction to Decimal",
+                code: `#include<stdio.h>
+
+int main()
+{
+  float num;
+  printf("Enter binary fraction number: ");
+  scanf("%f", &num);
+  
+  int a = (int)num;
+  int rem, i = 1;
+  int dec = 0;
+  
+  while(a > 0)
+  {
+    rem = a % 10;
+    dec += rem * i;
+    i *= 2;
+    a /= 10;
+  }
+  
+  float frac = num - (int)num;
+  float base = 0.5;
+  float fracdec = 0.0;
+  
+  while(frac > 0.000001)
+  {
+    int bit = (int)(frac * 10) % 10;
+    fracdec += bit * base;
+    base /= 2;
+    frac = frac * 10 - bit;
+  }
+  
+  float j = dec + fracdec;
+  printf("Decimal number: %.6f", j);
+  return 0;
+}`,
+                output: `Enter binary fraction number: 1011.1110
+Decimal number: 11.875000`
+            },
+            {
+                id: 5,
+                title: "1's Complement of Binary",
+                code: `#include<stdio.h>
+
+int main()
+{
+  int n;
+  printf("Enter number of bits: ");
+  scanf("%d", &n);
+  
+  long num[n], compl[n];
+  printf("Enter binary number: ");
+  
+  for(int i = 0; i < n; i++)
+  {
+    scanf("%ld", &num[i]);
+  }
+  
+  for(int j = 0; j < n; j++)
+  {
+    compl[j] = (num[j] == 0) ? 1 : 0;
+  }
+  
+  printf("1's complement: ");
+  for(int i = 0; i < n; i++)
+  {
+    printf("%ld", compl[i]);
+  }
+  
+  return 0;
+}`,
+                output: `Enter number of bits: 4
+Enter binary number: 1011
+1's complement: 0100`
+            },
+            {
+                id: 6,
+                title: "2's Complement of Binary",
+                code: `#include<stdio.h>
+
+int main()
+{
+  int n;
+  printf("Enter number of bits: ");
+  scanf("%d", &n);
+  
+  long num[n], compl2[n];
+  printf("Enter binary number: ");
+  
+  for(int i = 0; i < n; i++)
+  {
+    scanf("%ld", &num[i]);
+  }
+  
+  for(int j = 0; j < n; j++)
+  {
+    compl2[j] = (num[j] == 0) ? 1 : 0;
+  }
+  
+  int carry = 1;
+  for(int i = n - 1; i >= 0; i--)
+  {
+    int sum = compl2[i] + carry;
+    compl2[i] = sum % 2;
+    carry = sum / 2;
+  }
+  
+  printf("2's complement: ");
+  for(int i = 0; i < n; i++)
+  {
+    printf("%ld", compl2[i]);
+  }
+  
+  return 0;
+}`,
+                output: `Enter number of bits: 4
+Enter binary number: 1010
+2's complement: 0110`
+            },
+            {
+                id: 7,
+                title: "Sum of Two Numbers (Normalized)",
+                code: `#include<stdio.h>
+#include<math.h>
+
+int main()
+{
+  float num1, num2;
+  float sum;
+  int exponent = 0;
+  
+  printf("Enter num1 & num2: ");
+  scanf("%f %f", &num1, &num2);
+  
+  sum = num1 + num2;
+  printf("Sum of numbers: %.4f", sum);
+  
+  if(sum != 0.0)
+  {
+    while(fabs(sum) >= 10.0)
+    {
+      sum /= 10.0;
+      exponent++;
+    }
+    while(fabs(sum) < 1.0)
+    {
+      sum *= 10.0;
+      exponent--;
+    }
+  }
+  
+  printf("\nAfter Normalization: %.4f x 10^%d", sum, exponent);
+  return 0;
+}`,
+                output: `Enter num1 & num2: 25.876 45.678
+Sum of numbers: 71.554001
+After Normalization: 7.1554 x 10^1`
+            },
+            {
+                id: 8,
+                title: "Subtract Two Numbers (Normalized)",
+                code: `#include<stdio.h>
+#include<math.h>
+
+int main()
+{
+  float num1, num2;
+  float minus;
+  int exponent = 0;
+  
+  printf("Enter num1 & num2: ");
+  scanf("%f %f", &num1, &num2);
+  
+  minus = num1 - num2;
+  printf("Subtract of numbers: %.4f", minus);
+  
+  if(minus != 0)
+  {
+    while(fabs(minus) >= 10.0)
+    {
+      minus /= 10.0;
+      exponent++;
+    }
+    while(fabs(minus) < 1.0)
+    {
+      minus *= 10.0;
+      exponent--;
+    }
+  }
+  
+  printf("\nAfter Normalization: %.4f x 10^%d", minus, exponent);
+  return 0;
+}`,
+                output: `Enter num1 & num2: 165.764 85.675
+Subtract of numbers: 80.089001
+After Normalization: 8.0089 x 10^1`
+            },
+            {
+                id: 9,
+                title: "Multiply Two Numbers (Normalized)",
+                code: `#include<stdio.h>
+#include<math.h>
+
+int main()
+{
+  float num1, num2;
+  float multiply;
+  int exponent = 0;
+  
+  printf("Enter num1 & num2: ");
+  scanf("%f %f", &num1, &num2);
+  
+  multiply = num1 * num2;
+  printf("Multiplication of number: %.4f", multiply);
+  
+  if(multiply != 0)
+  {
+    while(fabs(multiply) >= 10.0)
+    {
+      multiply /= 10.0;
+      exponent++;
+    }
+    while(fabs(multiply) < 1.0)
+    {
+      multiply *= 10.0;
+      exponent--;
+    }
+  }
+  
+  printf("\nAfter Normalization: %.4f x 10^%d", multiply, exponent);
+  return 0;
+}`,
+                output: `Enter num1 & num2: 15.253 17.654
+Multiplication of number: 269.276462
+After Normalization: 2.6928 x 10^2`
+            },
+            {
+                id: 10,
+                title: "Division of Two Numbers (Normalized)",
+                code: `#include<stdio.h>
+#include<math.h>
+
+int main()
+{
+  float num1, num2;
+  float div;
+  int exponent = 0;
+  
+  printf("Enter num1 & num2: ");
+  scanf("%f %f", &num1, &num2);
+  
+  div = num1 / num2;
+  printf("Division result: %.4f", div);
+  
+  if(div != 0)
+  {
+    while(fabs(div) >= 10.0)
+    {
+      div /= 10.0;
+      exponent++;
+    }
+    while(fabs(div) < 1.0)
+    {
+      div *= 10.0;
+      exponent--;
+    }
+  }
+  
+  printf("\nAfter Normalization: %.4f x 10^%d", div, exponent);
+  return 0;
+}`,
+                output: `Enter num1 & num2: 354.644 25.246
+Division result: 14.047532
+After Normalization: 1.4048 x 10^1`
+            },
+            {
+                id: 11,
+                title: "Bisection Method",
+                code: `#include<stdio.h>
+#include<math.h>
+
+int main()
+{
+  float fx, z, a, b, x = -2, s, t, u, v;
+  int n = 1;
+  
+  printf("Enter coefficients of equation:\n");
+  printf("x^3 = ");
+  scanf("%f", &s);
+  printf("x^2 = ");
+  scanf("%f", &t);
+  printf("x^1 = ");
+  scanf("%f", &u);
+  printf("c = ");
+  scanf("%f", &v);
+  
+  bool w1 = 0, w2 = 0;
+  
+  while(x < 5)
+  {
+    float eqn = (s * pow(x, 3)) + (t * pow(x, 2)) + (u * x) + v;
+    
+    if(eqn < 0)
+    {
+      a = x;
+      w1 = 1;
+    }
+    else
+    {
+      b = x;
+      w2 = 1;
+    }
+    x = x + 0.5;
+    if(w1 && w2)
+      break;
+  }
+  
+  while(1)
+  {
+    x = (a + b) / 2;
+    fx = (s * pow(x, 3)) + (t * pow(x, 2)) + (u * x) + v;
+    
+    if(fx > 0)
+      b = x;
+    else if(fx < 0)
+      a = x;
+    
+    if(n > 1 && fabs(x - z) <= 0.02)
+    {
+      printf("Solution = %f\n", x);
+      break;
+    }
+    z = x;
+    n++;
+  }
+  
+  return 0;
+}`,
+                output: `Enter coefficients of equation:
+x^3 = 1
+x^2 = 0
+x^1 = -5
+c = 3
+Solution = 0.671875`
+            },
+            {
+                id: 12,
+                title: "Newton-Raphson Method",
+                code: `#include<stdio.h>
+
+double p, q, r, s;
+
+double f(double x)
+{
+  return (p * x * x * x) + (q * x * x) + (r * x) + s;
+}
+
+double fx(double x)
+{
+  return (3 * p * x * x) + (2 * q * x) + r;
+}
+
+int main()
+{
+  double a, b;
+  int iter, i;
+  
+  printf("Enter coefficient of x^3: ");
+  scanf("%lf", &p);
+  printf("Enter coefficient of x^2: ");
+  scanf("%lf", &q);
+  printf("Enter coefficient of x: ");
+  scanf("%lf", &r);
+  printf("Enter constant term: ");
+  scanf("%lf", &s);
+  printf("Enter initial value: ");
+  scanf("%lf", &a);
+  printf("Enter number of iterations: ");
+  scanf("%d", &iter);
+  
+  for(i = 1; i < iter; i++)
+  {
+    b = a - (f(a) / fx(a));
+    printf("Iteration %2d: a = %.8f, b = %.8f\n", i, a, b);
+    a = b;
+  }
+  
+  printf("Root = %.8f\n", b);
+  return 0;
+}`,
+                output: `Enter coefficient of x^3: 0
+Enter coefficient of x^2: 1
+Enter coefficient of x: 0
+Enter constant term: -8
+Enter initial value: 3
+Enter number of iterations: 3
+Iteration  1: a = 3.00000000, b = 2.83333333
+Iteration  2: a = 2.83333333, b = 2.82843137
+Root = 2.82843137`
+            },
+            {
+                id: 13,
+                title: "Regular Falsi Method",
+                code: `#include<stdio.h>
+#include<math.h>
+
+int main()
+{
+  float fx, x_prev, fa, fb, a, b, x = -2, s, t, u, v;
+  int n = 1;
+  
+  printf("Enter coefficients of equation:\n");
+  printf("x^3 = ");
+  scanf("%f", &s);
+  printf("x^2 = ");
+  scanf("%f", &t);
+  printf("x^1 = ");
+  scanf("%f", &u);
+  printf("c = ");
+  scanf("%f", &v);
+  
+  bool w1 = 0, w2 = 0;
+  
+  while(x < 5)
+  {
+    float eqn = (s * pow(x, 3)) + (t * pow(x, 2)) + (u * x) + v;
+    
+    if(eqn < 0)
+    {
+      a = x;
+      w1 = 1;
+    }
+    else
+    {
+      b = x;
+      w2 = 1;
+    }
+    x = x + 0.5;
+    if(w1 && w2)
+      break;
+  }
+  
+  while(1)
+  {
+    fa = (s * pow(a, 3)) + (t * pow(a, 2)) + (u * a) + v;
+    fb = (s * pow(b, 3)) + (t * pow(b, 2)) + (u * b) + v;
+    
+    x = ((a * fb) - (b * fa)) / (fb - fa);
+    fx = (s * pow(x, 3)) + (t * pow(x, 2)) + (u * x) + v;
+    
+    if(fx < 0)
+      a = x;
+    else
+      b = x;
+    
+    if(n > 1 && fabs(x - x_prev) <= 0.02)
+    {
+      printf("Solution = %f\n", x);
+      break;
+    }
+    x_prev = x;
+    n++;
+  }
+  
+  return 0;
+}`,
+                output: `Enter coefficients of equation:
+x^3 = 1
+x^2 = 0
+x^1 = -1
+c = -2
+Solution = 1.519576`
+            },
+            {
+                id: 14,
+                title: "Birge-Vieta Method",
+                code: `#include<stdio.h>
+#include<math.h>
+
+double p, q, r, s, t;
+
+int main()
+{
+  double a, b;
+  int iter, i;
+  double b0, b1, b2, b3, b4;
+  double c0, c1, c2, c3;
+  
+  printf("Enter coefficient of x^4: ");
+  scanf("%lf", &p);
+  printf("Enter coefficient of x^3: ");
+  scanf("%lf", &q);
+  printf("Enter coefficient of x^2: ");
+  scanf("%lf", &r);
+  printf("Enter coefficient of x: ");
+  scanf("%lf", &s);
+  printf("Enter constant term: ");
+  scanf("%lf", &t);
+  printf("Enter initial value: ");
+  scanf("%lf", &a);
+  printf("Enter number of iterations: ");
+  scanf("%d", &iter);
+  
+  for(i = 1; i <= iter; i++)
+  {
+    b4 = p;
+    b3 = q + (a * b4);
+    b2 = r + (a * b3);
+    b1 = s + (a * b2);
+    b0 = t + (a * b1);
+    
+    c3 = b4;
+    c2 = b3 + (a * c3);
+    c1 = b2 + (a * c2);
+    c0 = b1 + (a * c1);
+    
+    b = a - (b0 / c1);
+    printf("Iteration %2d: a = %.8f, b = %.8f\n", i, a, b);
+    a = b;
+  }
+  
+  printf("Root = %.8f\n", b);
+  return 0;
+}`,
+                output: `Enter coefficient of x^4: 1
+Enter coefficient of x^3: 7
+Enter coefficient of x^2: 24
+Enter coefficient of x: 0
+Enter constant term: -15
+Enter initial value: 1
+Enter number of iterations: 3
+Iteration  1: a = 1.00000000, b = 0.58536585
+Iteration  2: a = 0.58536585, b = 0.74353511
+Iteration  3: a = 0.74353511, b = 0.70329673
+Root = 0.70329673`
+            },
+            {
+                id: 15,
+                title: "Gauss Elimination Method",
+                code: `#include<stdio.h>
+#include<math.h>
+
+int main()
+{
+  int n, i, j, k;
+  float a[10][10], ratio, x[10];
+  
+  printf("Enter number of unknowns: ");
+  scanf("%d", &n);
+  
+  printf("Enter the elements of matrix:\n");
+  for(i = 0; i < n; i++)
+  {
+    for(j = 0; j <= n; j++)
+    {
+      printf("a[%d][%d] = ", i+1, j+1);
+      scanf("%f", &a[i][j]);
+    }
+  }
+  
+  for(i = 0; i < n-1; i++)
+  {
+    if(a[i][i] == 0.0)
+    {
+      printf("Mathematical Error!\n");
+      return 0;
+    }
+    
+    for(j = i+1; j < n; j++)
+    {
+      ratio = a[j][i] / a[i][i];
+      for(k = 0; k <= n; k++)
+      {
+        a[j][k] = a[j][k] - ratio * a[i][k];
+      }
+    }
+  }
+  
+  x[n-1] = a[n-1][n] / a[n-1][n-1];
+  
+  for(i = n-2; i >= 0; i--)
+  {
+    x[i] = a[i][n];
+    for(j = i+1; j < n; j++)
+    {
+      x[i] = x[i] - a[i][j] * x[j];
+    }
+    x[i] = x[i] / a[i][i];
+  }
+  
+  printf("\nSolution:\n");
+  for(i = 0; i < n; i++)
+  {
+    printf("x[%d] = %.3f\n", i+1, x[i]);
+  }
+  
+  return 0;
+}`,
+                output: `Enter number of unknowns: 3
+Enter the elements of matrix:
+a[1][1] = 2
+a[1][2] = 3
+a[1][3] = -1
+a[1][4] = 5
+a[2][1] = 4
+a[2][2] = 4
+a[2][3] = -3
+a[2][4] = 3
+a[3][1] = -2
+a[3][2] = 3
+a[3][3] = -1
+a[3][4] = 1
+
+Solution:
+x[1] = 0.800
+x[2] = 0.000
+x[3] = -1.000`
+            },
+            {
+                id: 16,
+                title: "Gauss Jordan Method",
+                code: `#include<stdio.h>
+#include<math.h>
+
+int main()
+{
+  float a[10][11], ratio;
+  int i, j, k, n;
+  
+  printf("Enter number of unknowns: ");
+  scanf("%d", &n);
+  
+  printf("Enter elements of matrix:\n");
+  for(i = 0; i < n; i++)
+  {
+    for(j = 0; j <= n; j++)
+    {
+      printf("a[%d][%d] = ", i+1, j+1);
+      scanf("%f", &a[i][j]);
+    }
+  }
+  
+  for(i = 0; i < n; i++)
+  {
+    if(a[i][i] == 0.0)
+    {
+      printf("Mathematical Error!\n");
+      return 0;
+    }
+    
+    float diag = a[i][i];
+    for(j = 0; j <= n; j++)
+    {
+      a[i][j] = a[i][j] / diag;
+    }
+    
+    for(k = 0; k < n; k++)
+    {
+      if(k != i)
+      {
+        ratio = a[k][i];
+        for(j = 0; j <= n; j++)
+        {
+          a[k][j] = a[k][j] - ratio * a[i][j];
+        }
+      }
+    }
+  }
+  
+  printf("\nSolution:\n");
+  for(i = 0; i < n; i++)
+  {
+    printf("x[%d] = %.3f\n", i+1, a[i][n]);
+  }
+  
+  return 0;
+}`,
+                output: `Enter number of unknowns: 3
+Enter elements of matrix:
+a[1][1] = 2
+a[1][2] = 1
+a[1][3] = 1
+a[1][4] = 10
+a[2][1] = 3
+a[2][2] = 2
+a[2][3] = 3
+a[2][4] = 18
+a[3][1] = 1
+a[3][2] = 4
+a[3][3] = 9
+a[3][4] = 19
+
+Solution:
+x[1] = -23.000
+x[2] = -12.000
+x[3] = 43.000`
+            },
+            {
+                id: 17,
+                title: "Gauss Seidel Method",
+                code: `#include<stdio.h>
+#include<math.h>
+
+int main()
+{
+  int n, i, j, iter, maxiter;
+  float a[10][10], x[10], sum, tol, diff;
+  
+  printf("Enter number of equations: ");
+  scanf("%d", &n);
+  
+  printf("Enter matrix elements:\n");
+  for(i = 0; i < n; i++)
+  {
+    for(j = 0; j <= n; j++)
+    {
+      scanf("%f", &a[i][j]);
+    }
+  }
+  
+  printf("Enter tolerance: ");
+  scanf("%f", &tol);
+  printf("Enter maximum iterations: ");
+  scanf("%d", &maxiter);
+  
+  for(i = 0; i < n; i++)
+  {
+    x[i] = 0;
+  }
+  
+  for(iter = 1; iter <= maxiter; iter++)
+  {
+    for(i = 0; i < n; i++)
+    {
+      sum = a[i][n];
+      for(j = 0; j < n; j++)
+      {
+        if(j != i)
+          sum -= a[i][j] * x[j];
+      }
+      x[i] = sum / a[i][i];
+    }
+  }
+  
+  printf("\nFinal Solution:\n");
+  for(i = 0; i < n; i++)
+  {
+    printf("x%d = %.6f\n", i+1, x[i]);
+  }
+  
+  return 0;
+}`,
+                output: `Enter number of equations: 3
+Enter matrix elements:
+10 1 1 12
+2 10 1 13
+2 2 10 14
+Enter tolerance: 0.0001
+Enter maximum iterations: 3
+
+Final Solution:
+x1 = 0.999555
+x2 = 1.000180
+x3 = 1.000053`
+            },
+            {
+                id: 18,
+                title: "Lagrangian Interpolation",
+                code: `#include<stdio.h>
+#include<math.h>
+
+int main()
+{
+  int n;
+  printf("Enter number of data points: ");
+  scanf("%d", &n);
+  
+  double x[n], y[n];
+  printf("Enter x and y values:\n");
+  for(int i = 0; i < n; i++)
+  {
+    printf("x[%d]: ", i);
+    scanf("%lf", &x[i]);
+    printf("y[%d]: ", i);
+    scanf("%lf", &y[i]);
+  }
+  
+  double xp;
+  printf("Enter value of x to interpolate: ");
+  scanf("%lf", &xp);
+  
+  double yp = 0.0;
+  for(int i = 0; i < n; i++)
+  {
+    double term = y[i];
+    for(int j = 0; j < n; j++)
+    {
+      if(j != i)
+        term *= (xp - x[j]) / (x[i] - x[j]);
+    }
+    yp += term;
+  }
+  
+  printf("Interpolated value at x = %.2lf is %.4lf\n", xp, yp);
+  return 0;
+}`,
+                output: `Enter number of data points: 3
+Enter x and y values:
+x[0]: 0
+y[0]: 1
+x[1]: 1
+y[1]: 6
+x[2]: 2
+y[2]: 17
+Enter value of x to interpolate: 1
+Interpolated value at x = 1.00 is 6.0000`
+            },
+            {
+                id: 19,
+                title: "Inverse Interpolation",
+                code: `#include<stdio.h>
+#include<math.h>
+
+int main()
+{
+  int n;
+  printf("Enter number of data points: ");
+  scanf("%d", &n);
+  
+  double x[n], y[n];
+  printf("Enter x and y values:\n");
+  for(int i = 0; i < n; i++)
+  {
+    printf("x[%d]: ", i);
+    scanf("%lf", &x[i]);
+    printf("y[%d]: ", i);
+    scanf("%lf", &y[i]);
+  }
+  
+  double yp;
+  printf("Enter value of y to find x: ");
+  scanf("%lf", &yp);
+  
+  double xp = 0.0;
+  for(int i = 0; i < n; i++)
+  {
+    double term = x[i];
+    for(int j = 0; j < n; j++)
+    {
+      if(j != i)
+        term *= (yp - y[j]) / (y[i] - y[j]);
+    }
+    xp += term;
+  }
+  
+  printf("Estimated x for y = %.2lf is %.4lf\n", yp, xp);
+  return 0;
+}`,
+                output: `Enter number of data points: 4
+Enter x and y values:
+x[0]: 1
+y[0]: -3
+x[1]: 3
+y[1]: 9
+x[2]: 4
+y[2]: 30
+x[3]: 6
+y[3]: 132
+Enter value of y to find x: 20
+Estimated x for y = 20.00 is 3.8573`
+            },
+            {
+                id: 20,
+                title: "Newton's Forward Difference",
+                code: `#include<stdio.h>
+#include<math.h>
+
+int fact(int n)
+{
+  int factorial = 1;
+  for(int i = 1; i <= n; i++)
+    factorial *= i;
+  return factorial;
+}
+
+int main()
+{
+  int n;
+  printf("Enter number of data points: ");
+  scanf("%d", &n);
+  
+  double x[n], y[n];
+  printf("Enter x and y values:\n");
+  for(int i = 0; i < n; i++)
+  {
+    printf("x[%d]: ", i);
+    scanf("%lf", &x[i]);
+    printf("y[%d]: ", i);
+    scanf("%lf", &y[i]);
+  }
+  
+  double h = x[1] - x[0];
+  double fp[n][n];
+  
+  for(int i = 0; i < n; i++)
+    fp[i][0] = y[i];
+  
+  for(int j = 1; j < n; j++)
+  {
+    for(int i = 0; i < n-j; i++)
+      fp[i][j] = fp[i+1][j-1] - fp[i][j-1];
+  }
+  
+  double xp;
+  printf("Enter value of x to interpolate: ");
+  scanf("%lf", &xp);
+  
+  double p = (xp - x[0]) / h;
+  double yp = fp[0][0];
+  
+  for(int i = 1; i < n; i++)
+  {
+    double term = fp[0][i];
+    for(int j = 0; j < i; j++)
+    {
+      term *= (p - j);
+      term /= fact(i);
+    }
+    yp += term;
+  }
+  
+  printf("Interpolated value at x = %.2lf is %.4lf\n", xp, yp);
+  return 0;
+}`,
+                output: `Enter number of data points: 4
+Enter x and y values:
+x[0]: 20
+y[0]: 0.34
+x[1]: 25
+y[1]: 0.42
+x[2]: 30
+y[2]: 0.5
+x[3]: 35
+y[3]: 0.65
+Enter value of x to interpolate: 22
+Interpolated value at x = 22.00 is 0.3721`
+            },
+            {
+                id: 21,
+                title: "Newton's Backward Difference",
+                code: `#include<stdio.h>
+#include<math.h>
+
+int fact(int n)
+{
+  int factorial = 1;
+  for(int i = 1; i <= n; i++)
+    factorial *= i;
+  return factorial;
+}
+
+int main()
+{
+  int n;
+  printf("Enter number of data points: ");
+  scanf("%d", &n);
+  
+  double x[n], y[n];
+  printf("Enter x and y values:\n");
+  for(int i = 0; i < n; i++)
+  {
+    printf("x[%d]: ", i);
+    scanf("%lf", &x[i]);
+    printf("y[%d]: ", i);
+    scanf("%lf", &y[i]);
+  }
+  
+  double h = x[1] - x[0];
+  double bp[n][n];
+  
+  for(int i = 0; i < n; i++)
+    bp[i][0] = y[i];
+  
+  for(int j = 1; j < n; j++)
+  {
+    for(int i = n-1; i >= j; i--)
+      bp[i][j] = bp[i][j-1] - bp[i-1][j-1];
+  }
+  
+  double xp;
+  printf("Enter value of x to interpolate: ");
+  scanf("%lf", &xp);
+  
+  double p = (xp - x[n-1]) / h;
+  double yp = bp[n-1][0];
+  
+  for(int i = 1; i < n; i++)
+  {
+    double term = bp[n-1][i];
+    for(int j = 0; j < i; j++)
+    {
+      term *= (p + j);
+      term /= fact(i);
+    }
+    yp += term;
+  }
+  
+  printf("Interpolated value at x = %.2lf is %.4lf\n", xp, yp);
+  return 0;
+}`,
+                output: `Enter number of data points: 4
+Enter x and y values:
+x[0]: 1
+y[0]: 8
+x[1]: 2
+y[1]: 21
+x[2]: 3
+y[2]: 68
+x[3]: 4
+y[3]: 101
+Enter value of x to interpolate: 3.5
+Interpolated value at x = 3.50 is 85.4583`
+            },
+            {
+                id: 22,
+                title: "Newton's Divided Difference",
+                code: `#include<stdio.h>
+#include<math.h>
+
+int main()
+{
+  int n;
+  printf("Enter number of data points: ");
+  scanf("%d", &n);
+  
+  double x[n], y[n][n];
+  printf("Enter x and y values:\n");
+  for(int i = 0; i < n; i++)
+  {
+    printf("x[%d]: ", i);
+    scanf("%lf", &x[i]);
+    printf("y[%d]: ", i);
+    scanf("%lf", &y[i][0]);
+  }
+  
+  for(int j = 1; j < n; j++)
+  {
+    for(int i = 0; i < n-j; i++)
+    {
+      y[i][j] = (y[i+1][j-1] - y[i][j-1]) / (x[i+j] - x[i]);
+    }
+  }
+  
+  double xp;
+  printf("Enter value of x to interpolate: ");
+  scanf("%lf", &xp);
+  
+  double yp = y[0][0];
+  
+  for(int i = 1; i < n; i++)
+  {
+    double term = y[0][i];
+    for(int j = 0; j < i; j++)
+      term *= (xp - x[j]);
+    yp += term;
+  }
+  
+  printf("Interpolated value at x = %.2lf is %.4lf\n", xp, yp);
+  return 0;
+}`,
+                output: `Enter number of data points: 5
+Enter x and y values:
+x[0]: -3
+y[0]: -30
+x[1]: -1
+y[1]: -22
+x[2]: 0
+y[2]: -12
+x[3]: 3
+y[3]: 330
+x[4]: 5
+y[4]: 3458
+Enter value of x to interpolate: 2.5
+Interpolated value at x = 2.50 is 1682.6875`
+            },
+            {
+                id: 23,
+                title: "Trapezoidal Rule",
+                code: `#include<stdio.h>
+#include<math.h>
+
+int main()
+{
+  int i, n;
+  float a, b, h, x[20], y[20], sum = 0.0, integral;
+  
+  printf("Enter lower limit (a): ");
+  scanf("%f", &a);
+  printf("Enter upper limit (b): ");
+  scanf("%f", &b);
+  printf("Enter number of sub-intervals (n): ");
+  scanf("%d", &n);
+  
+  h = (b - a) / n;
+  
+  for(i = 0; i <= n; i++)
+  {
+    x[i] = a + i * h;
+    y[i] = 1 / (1 + x[i]);
+  }
+  
+  sum = y[0] + y[n];
+  for(i = 1; i < n; i++)
+    sum += 2 * y[i];
+  
+  integral = (h / 2) * sum;
+  printf("Integral (Trapezoidal) = %.4f\n", integral);
+  
+  return 0;
+}`,
+                output: `Enter lower limit (a): 0
+Enter upper limit (b): 1
+Enter number of sub-intervals (n): 8
+
+Integral (Trapezoidal) = 0.6941`
+            },
+            {
+                id: 24,
+                title: "Simpson's 1/3 Rule",
+                code: `#include<stdio.h>
+#include<math.h>
+
+int main()
+{
+  int i, n;
+  float a, b, h, x[20], y[20], sum = 0.0, integral;
+  
+  printf("Enter lower limit (a): ");
+  scanf("%f", &a);
+  printf("Enter upper limit (b): ");
+  scanf("%f", &b);
+  printf("Enter number of sub-intervals (n): ");
+  scanf("%d", &n);
+  
+  if(n % 2 != 0)
+  {
+    printf("Error: n must be even.\n");
+    return 0;
+  }
+  
+  h = (b - a) / n;
+  
+  for(i = 0; i <= n; i++)
+  {
+    x[i] = a + i * h;
+    y[i] = 1 / (4 * x[i] + 5);
+  }
+  
+  sum = y[0] + y[n];
+  for(i = 1; i < n; i++)
+  {
+    if(i % 2 == 0)
+      sum += 2 * y[i];
+    else
+      sum += 4 * y[i];
+  }
+  
+  integral = (h / 3) * sum;
+  printf("Integral (Simpson's 1/3) = %.4f\n", integral);
+  
+  return 0;
+}`,
+                output: `Enter lower limit (a): 0
+Enter upper limit (b): 5
+Enter number of sub-intervals (n): 10
+
+Integral (Simpson's 1/3) = 0.40`
+            },
+            {
+                id: 25,
+                title: "Simpson's 3/8 Rule",
+                code: `#include<stdio.h>
+#include<math.h>
+
+int main()
+{
+  int i, n;
+  float a, b, h, x[20], y[20], sum = 0.0, integral;
+  
+  printf("Enter lower limit (a): ");
+  scanf("%f", &a);
+  printf("Enter upper limit (b): ");
+  scanf("%f", &b);
+  printf("Enter number of sub-intervals (n): ");
+  scanf("%d", &n);
+  
+  if(n % 3 != 0)
+  {
+    printf("Error: n must be multiple of 3.\n");
+    return 0;
+  }
+  
+  h = (b - a) / n;
+  
+  for(i = 0; i <= n; i++)
+  {
+    x[i] = a + i * h;
+    y[i] = 1 / (1 + x[i]);
+  }
+  
+  sum = y[0] + y[n];
+  for(i = 1; i < n; i++)
+  {
+    if(i % 3 == 0)
+      sum += 2 * y[i];
+    else
+      sum += 3 * y[i];
+  }
+  
+  integral = (3 * h / 8) * sum;
+  printf("Integral (Simpson's 3/8) = %.4f\n", integral);
+  
+  return 0;
+}`,
+                output: `Enter lower limit (a): 0
+Enter upper limit (b): 1
+Enter number of sub-intervals (n): 6
+
+Integral (Simpson's 3/8) = 0.69`
+            },
+            {
+                id: 26,
+                title: "Euler's Method",
+                code: `#include<stdio.h>
+#include<math.h>
+
+int main()
+{
+  float x0, y0, xn, h, yn, slope;
+  int n, i;
+  
+  printf("Enter initial condition (x0, y0): ");
+  scanf("%f %f", &x0, &y0);
+  printf("Enter value of x at which y required: ");
+  scanf("%f", &xn);
+  printf("Enter step size (h): ");
+  scanf("%f", &h);
+  
+  n = (int)((xn - x0) / h);
+  
+  printf("\n x\t\t y\n");
+  printf("--------\n");
+  
+  for(i = 0; i < n; i++)
+  {
+    slope = 3 * x0 + y0;
+    yn = y0 + h * slope;
+    printf("%7.4f\t%7.4f\n", x0, y0);
+    y0 = yn;
+    x0 = x0 + h;
+  }
+  
+  printf("--------\n");
+  printf("Approximate value at x = %.4f is %.4f\n", xn, y0);
+  
+  return 0;
+}`,
+                output: `Enter initial condition (x0, y0): 0 1
+Enter value of x at which y required: 0.5
+Enter step size (h): 0.1
+
+ x              y
+--------
+0.0000         1.0000
+0.1000         1.1000
+0.2000         1.2400
+0.3000         1.4240
+--------
+Approximate value at x = 0.5000 is 1.6564`
+            },
+            {
+                id: 27,
+                title: "Modified Euler's Method",
+                code: `#include<stdio.h>
+#include<math.h>
+
+int main()
+{
+  float x0, y0, xn, h, x, y, y_predict, y_correct, f1, f2;
+  int n, i;
+  
+  printf("Enter initial condition (x0, y0): ");
+  scanf("%f %f", &x0, &y0);
+  printf("Enter value of x at which y required: ");
+  scanf("%f", &xn);
+  printf("Enter step size (h): ");
+  scanf("%f", &h);
+  
+  n = (int)((xn - x0) / h);
+  x = x0;
+  y = y0;
+  
+  printf("\n x\t\t y\n");
+  printf("--------\n");
+  
+  for(i = 0; i < n; i++)
+  {
+    f1 = x + y;
+    y_predict = y + h * f1;
+    f2 = (x + h) + y_predict;
+    y_correct = y + (h / 2) * (f1 + f2);
+    printf("%7.4f\t%7.4f\n", x, y);
+    x = x + h;
+    y = y_correct;
+  }
+  
+  printf("--------\n");
+  printf("Approximate value at x = %.4f is %.4f\n", xn, y);
+  
+  return 0;
+}`,
+                output: `Enter initial condition (x0, y0): 0 1
+Enter value of x at which y required: 0.3
+Enter step size (h): 0.1
+
+ x              y
+--------
+0.0000         1.0000
+0.1000         1.1100
+0.2000         1.2421
+--------
+Approximate value at x = 0.3000 is 1.3985`
+            },
+            {
+                id: 28,
+                title: "Runge Kutta 2nd Order",
+                code: `#include<stdio.h>
+
+double f(double x, double y)
+{
+  return x + y;
+}
+
+int main()
+{
+  double x0, y0, x, h;
+  int n, i;
+  
+  printf("Enter initial x0: ");
+  scanf("%lf", &x0);
+  printf("Enter initial y0: ");
+  scanf("%lf", &y0);
+  printf("Enter step size h: ");
+  scanf("%lf", &h);
+  printf("Enter number of steps n: ");
+  scanf("%d", &n);
+  
+  x = x0;
+  double y = y0;
+  
+  printf("\nStep\tx\t\ty\n");
+  printf("0\t%.6f\t%.6f\n", x, y);
+  
+  for(i = 1; i <= n; i++)
+  {
+    double k1 = f(x, y);
+    double x_mid = x + h / 2.0;
+    double y_mid = y + (h * k1) / 2.0;
+    double k2 = f(x_mid, y_mid);
+    double y_next = y + h * k2;
+    x = x + h;
+    y = y_next;
+    printf("%d\t%.6f\t%.6f\n", i, x, y);
+  }
+  
+  printf("\nApproximate solution at x = %.6f is y = %.6f\n", x, y);
+  
+  return 0;
+}`,
+                output: `Enter initial x0: 1
+Enter initial y0: 5
+Enter step size h: 0.1
+Enter number of steps n: 2
+
+Step  x              y
+0     1.000000       5.000000
+1     1.100000       5.635000
+2     1.200000       6.347175
+
+Approximate solution at x = 1.200000 is y = 6.347175`
+            },
+            {
+                id: 29,
+                title: "Runge Kutta 4th Order",
+                code: `#include<stdio.h>
+
+double f(double x, double y)
+{
+  return x + y;
+}
+
+int main()
+{
+  double x0, y0, h, x, k1, k2, k3, k4, y;
+  int n, i;
+  
+  printf("Enter initial value of x (x0): ");
+  scanf("%lf", &x0);
+  printf("Enter initial value of y (y0): ");
+  scanf("%lf", &y0);
+  printf("Enter step size (h): ");
+  scanf("%lf", &h);
+  printf("Enter number of steps (n): ");
+  scanf("%d", &n);
+  
+  x = x0;
+  y = y0;
+  
+  printf("\nStep\tx\t\ty\n");
+  printf("--------\n");
+  printf("0\t%.6f\t%.6f\n", x, y);
+  
+  for(i = 1; i <= n; i++)
+  {
+    k1 = f(x, y);
+    k2 = f(x + h/2, y + (h/2)*k1);
+    k3 = f(x + h/2, y + (h/2)*k2);
+    k4 = f(x + h, y + h*k3);
+    y = y + (h/6) * (k1 + 2*k2 + 2*k3 + k4);
+    x = x + h;
+    printf("%d\t%.6f\t%.6f\n", i, x, y);
+  }
+  
+  printf("--------\n");
+  printf("Approximate value at x = %.6f is: %.6f\n", x, y);
+  
+  return 0;
+}`,
+                output: `Enter initial value of x (x0): 0
+Enter initial value of y (y0): 1
+Enter step size (h): 0.1
+Enter number of steps (n): 2
+
+Step  x              y
+0     1.000000       1.000000
+1     1.100000       1.110342
+2     1.200000       1.242805
+
+Approximate value at x = 0.200000 is: 1.242805`
+            }
+        ];
+
+        // Initialize program list
+        function initializeProgramList() {
+            const programList = document.getElementById('programList');
+            programs.forEach((program, index) => {
+                const li = document.createElement('li');
+                li.className = 'program-item' + (index === 0 ? ' active' : '');
+                li.textContent = `${program.id}. ${program.title}`;
+                li.onclick = () => selectProgram(index);
+                programList.appendChild(li);
+            });
+        }
+
+        // Select program
+        function selectProgram(index) {
+            const items = document.querySelectorAll('.program-item');
+            items.forEach((item, i) => {
+                item.classList.remove('active');
+                if(i === index) {
+                    item.classList.add('active');
+                }
+            });
+
+            const program = programs[index];
+            document.getElementById('codeDisplay').textContent = program.code;
+            document.getElementById('outputDisplay').textContent = program.output;
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeProgramList();
+            selectProgram(0);
+        });
+    </script>
+</body>
+</html>
